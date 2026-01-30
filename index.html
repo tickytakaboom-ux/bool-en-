@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Question simple</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #0f172a; /* sombre */
+      color: #e5e7eb;      /* clair */
+      font-family: system-ui, sans-serif;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: #020617;
+      padding: 30px 40px;
+      border-radius: 12px;
+      text-align: center;
+      width: 320px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .yes { background: #22c55e; }
+    .no { background: #ef4444; }
+    .maybe { background: #64748b; }
+
+    .stats {
+      margin-top: 20px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .stat {
+      margin: 4px 0;
+    }
+	.reset {
+	  background: #fbbf24;
+	  color: #020617;
+	  margin-top: 12px;
+	}
+	.results {
+	  display: flex;
+	  gap: 16px;
+	  margin-top: 24px;
+	  justify-content: center;
+	}
+
+	.result {
+	  background: #020617;
+	  border: 1px solid #1e293b;
+	  border-radius: 14px;
+	  padding: 16px 22px;
+	  min-width: 110px;
+	  text-align: center;
+	  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+	  transition: transform 0.2s ease;
+	}
+
+	.result:hover {
+	  transform: translateY(-4px);
+	}
+
+	.result span {
+	  display: block;
+	  font-size: 14px;
+	  opacity: 0.7;
+	}
+
+	.result strong {
+	  font-size: 34px;
+	  font-weight: 800;
+	  margin-top: 4px;
+	  display: block;
+	}
+
+	/* Couleurs */
+	.result.yes strong {
+	  color: #22c55e;
+	}
+
+	.result.no strong {
+	  color: #ef4444;
+	}
+
+	.result.maybe strong {
+	  color: #facc15;
+	}
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Quel booléen ?</h1>
+
+    <button class="btn yes" onclick="vote('yes')">0</button>
+    <button class="btn no" onclick="vote('no')">1</button>
+    <button class="btn maybe" onclick="vote('maybe')">Je ne sais pas</button>
+
+   <div class="results">
+	  <div class="result yes">
+		<span>Oui</span>
+		<strong id="yesCount">0</strong>
+	  </div>
+
+	  <div class="result no">
+		<span>Non</span>
+		<strong id="noCount">0</strong>
+	  </div>
+
+	  <div class="result maybe">
+		<span>Je ne sais pas</span>
+		<strong id="maybeCount">0</strong>
+	  </div>
+	</div>
+	<button class="btn reset" onclick="resetVotes()">Remettre à 0</button>
+    </div>
+  </div>
+
+  <script>
+    // 🔹 Charger les valeurs sauvegardées
+    const counts = {
+      yes: Number(localStorage.getItem("yes")) || 0,
+      no: Number(localStorage.getItem("no")) || 0,
+      maybe: Number(localStorage.getItem("maybe")) || 0
+    };
+
+    function animate(el) {
+	  el.style.transform = "scale(1.15)";
+	  setTimeout(() => el.style.transform = "scale(1)", 150);
+	}
+
+	function updateDisplay() {
+	  yesCount.textContent = counts.yes;
+	  noCount.textContent = counts.no;
+	  maybeCount.textContent = counts.maybe;
+
+	  animate(yesCount);
+	  animate(noCount);
+	  animate(maybeCount);
+	}
+
+    function vote(type) {
+      counts[type]++;
+      localStorage.setItem(type, counts[type]);
+      updateDisplay();
+    }
+	function resetVotes() {
+	  counts.yes = 0;
+	  counts.no = 0;
+	  counts.maybe = 0;
+
+	  localStorage.removeItem("yes");
+	  localStorage.removeItem("no");
+	  localStorage.removeItem("maybe");
+
+	  updateDisplay();
+	}
+
+    updateDisplay();
+  </script>
+
+</body>
+</html>
